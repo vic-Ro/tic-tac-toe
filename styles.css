@@ -1,0 +1,228 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@700;900&display=swap');
+body {
+  font-family: 'Lato', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}
+
+:root {
+  --board__cell-size: 100px;
+  --mark-size: calc(var(--board__cell-size) * .9);
+  --white: #fff;
+  --brown: rgb(100, 50, 0);
+  --brown-hover: #d0c1b2;
+  --brown-darker: rgba(20, 10, 0, 0.9);
+}
+
+/** Menu and scores**/
+
+.title {
+  margin: 50px 0 0;
+  font-weight: 900;
+  color: var(--brown);
+}
+.subtitle {
+  margin: 10px 0 10px;
+  font-size: 1.2em;
+  color: var(--brown-hover);
+}
+
+.score {
+  list-style: none;
+  margin: 10px 0 30px;
+  padding: 0;
+  display: flex;
+}
+.score__item {
+  margin-right: 50px;
+}
+
+
+/** Board **/
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  background-color: white; /*TODO provisional */
+  width: 100%;
+  height: 80%;
+  justify-content: center;
+  align-content: center;
+}
+
+/** Cells **/ 
+
+.board__cell {
+  width: var(--board__cell-size);
+  height: var(--board__cell-size);
+  border: 1px solid var(--brown);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.board__cell:first-of-type, 
+.board__cell:nth-of-type(2), 
+.board__cell:nth-of-type(3) {
+  border-top: none;
+}
+
+.board__cell:nth-of-type(3n + 1) {
+  border-left: none;
+}
+
+.board__cell:nth-of-type(3n + 3) {
+  border-right: none;
+}
+
+.board__cell:nth-of-type(7), 
+.board__cell:nth-of-type(8),
+.board__cell:last-of-type {
+  border-bottom: none;
+}
+
+.board__cell.xs, .board__cell.os {
+  cursor: not-allowed;
+}
+
+/** X's and O's icons **/
+
+.xs::before, 
+.xs::after,
+.board.x .board__cell:not(.xs):not(.os):hover::before,
+.board.x .board__cell:not(.xs):not(.os):hover::after {
+  content: '';
+  width: var(--mark-size);
+  height: calc(var(--mark-size) * .2);
+  background-color: var(--brown);
+  position: absolute;
+}
+
+.xs::before,
+.board.x .board__cell:not(.xs):not(.os):hover::before {
+  transform: rotate(45deg);
+}
+
+.xs::after,
+.board.x .board__cell:not(.xs):not(.os):hover::after {
+  transform: rotate(-45deg);
+}
+
+.board.x .board__cell:not(.xs):not(.os):hover::before,
+.board.x .board__cell:not(.xs):not(.os):hover::after {
+  background-color: var(--brown-hover);
+}
+
+.os::before, 
+.os::after,
+.board.o .board__cell:not(.xs):not(.os):hover::before,
+.board.o .board__cell:not(.xs):not(.os):hover::after {
+  content: '';
+  width: var(--mark-size);
+  height: var(--mark-size);
+  background-color: var(--brown);
+  border-radius: 50%;
+  position: absolute;
+}
+
+.os::after,
+.board.o .board__cell:not(.xs):not(.os):hover::after {
+  width: calc(var(--mark-size) * .7);
+  height: calc(var(--mark-size) * .7);
+  background-color: var(--white);
+}
+
+.board.o .board__cell:not(.xs):not(.os):hover::before {
+  background-color: var(--brown-hover);
+}
+
+/** Game end msg **/
+
+.emergingwindow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: absolute;
+  background-color: var(--brown-darker);
+  width: 100%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+.show {
+  display: none;
+}
+
+.emergingwindow__title {
+  font-size: 3em;
+  color: var(--white);
+}
+
+.emergingwindow__button {
+  padding: .5em;
+  margin-top: 1.5em;
+  font-size: 1.2em;
+  cursor: pointer;
+  color: var(--white);
+  background-color: var(--brown);
+  border-color: var(--white);
+  border-radius: 5px;
+  transition: background-color .3s;
+}
+
+.emergingwindow__button:hover {
+  color: var(--brown);
+  background-color: var(--white);
+  border: 2px solid var(--brown-hover);
+}
+
+.emergingwindow__button:active {
+  transform: scale(.97);
+}
+
+.emergingwindow__mode {
+  background-color: white;
+  display: inline-block;
+  text-align: center;
+  width: 110px;
+  border-radius: 5px;
+  border: 2px solid var(--brown-hover);
+  padding: .5em;
+  margin: .5em;
+  cursor: pointer;
+}
+
+.emergingwindow__mode:hover {
+  background-color: var(--brown-hover);
+  border-color: var(--white);
+}
+
+.emergingwindow__mode--selected {
+  background-color: #9fc;
+}
+
+.emergingwindow_names {
+  width: 90px;
+  height: 30px;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: white;
+  border: 2px solid var(--brown-hover);
+}
+
+.emergingwindow_names--label {
+  color: var(--white);
+  margin: 0 10px;
+}
+
+.emergingwindow_names:focus {
+  border-color:#9fc;
+}
