@@ -20,24 +20,26 @@ body {
 /** Menu and scores**/
 
 .title {
-  margin: 50px 0 0;
+  margin: 50px 0 10px;
   font-weight: 900;
   color: var(--brown);
 }
 .subtitle {
-  margin: 10px 0 10px;
+  margin: 10px 20px 10px;
+  text-align: center;
   font-size: 1.2em;
   color: var(--brown-hover);
 }
 
 .score {
   list-style: none;
-  margin: 10px 0 30px;
+  margin: 10px 20px 30px;
   padding: 0;
   display: flex;
 }
 .score__item {
-  margin-right: 50px;
+  margin-right: 20px;
+  text-align: center;
 }
 
 
@@ -157,7 +159,7 @@ body {
   left: 0;
 }
 
-.show {
+.dontshow {
   display: none;
 }
 
@@ -220,9 +222,14 @@ body {
 
 .emergingwindow_names--label {
   color: var(--white);
-  margin: 0 10px;
+  margin-left: 10px;
+  margin-right: 5px;
 }
 
 .emergingwindow_names:focus {
   border-color:#9fc;
+}
+
+.error-names {
+  color: #ff9999;
 }

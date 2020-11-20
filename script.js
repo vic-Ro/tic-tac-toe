@@ -1,7 +1,11 @@
-// eslint-disable-next-line no-unused-vars
-const GameBoard = (() => {
+/* eslint-disable max-len */
+const GameSettings = (() => {
   //* VARIABLES *//
-  const winningComp = [
+  const humanPlayer = 'X';
+  const aiPlayer = 'O';
+  const board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+
+  const winningCombinations = [
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
@@ -12,105 +16,109 @@ const GameBoard = (() => {
     [2, 4, 6],
   ];
 
-  const board = document.getElementById('board');
+  let currentPlayer = humanPlayer;
 
+  //* DOM ELEMENTS *//
   const cells = [...document.querySelectorAll('.board__cell')];
 
-  const scores = {
-    playerX: 0,
-    playerO: 0,
-    draws: 0,
-  };
-
-  /* SCORES */
-
-  const xName = document.getElementById('name__playerx').textContent;
-  const oName = document.getElementById('name__playero').textContent;
-
-  const xScore = document.getElementById('score__playerx');
-  const oScore = document.getElementById('score__playero');
-  const drawScore = document.getElementById('score__draws');
-
-  /* GAME END & RESET */
-  const gameEndWindow = document.getElementById('game-end');
-  const restartButton = document.getElementById('restart-button');
-
-  let currentClass = 'xs';
-
   //* FUNCTIONS *//
-  const addMarker = (cell) => {
-    cell.classList.add(currentClass);
+  function addClass(target) {
+    if (currentPlayer === humanPlayer) target.classList.add('xs');
+    else target.classList.add('os');
+  }
+  const cleanBoard = (boardArray) => boardArray.filter((index) => index !== 'X' && index !== 'O');
+
+  const updateMoves = (target) => {
+    // first we update the board
+    board[target.dataset.index] = currentPlayer;
+    // then we push the moves to each player track
   };
 
-  const switchTurn = () => {
-    if (currentClass === 'xs') {
-      board.classList.remove('x');
-      board.classList.add('o');
-      currentClass = 'os';
-    } else {
-      board.classList.remove('o');
-      board.classList.add('x');
-      currentClass = 'xs';
+  const checkWin = (boardArray, player) => winningCombinations.some((combination) => combination.every((cell) => boardArray[cell] === player));
+
+  const checkDraw = () => {
+    if (cleanBoard(board).length === 0 && checkWin(board, currentPlayer) === false) return alert('draw');
+    return false;
+  };
+
+  const switchPlayer = () => {
+    if (currentPlayer === humanPlayer) currentPlayer = aiPlayer;
+    else currentPlayer = humanPlayer;
+  };
+
+  const minimax = (newBoard, player) => {
+    const possibleMoves = cleanBoard(board);
+    // Check if the game ends with a win, lose or tie
+    if (checkWin(newBoard, humanPlayer)) return { score: -10 };
+    if (checkWin(newBoard, aiPlayer)) return { score: 10 };
+    if (possibleMoves.length === 0) return { score: 0 };
+    // Array to store all objects
+    const moves = [];
+    for (let i = 0; i < possibleMoves.length; i += 1) {
+      // Creates an object for each move and stores the index of that spot
+      const move = {};
+      move.index = newBoard[possibleMoves[i]];
+      // eslint-disable-next-line no-param-reassign
+      newBoard[possibleMoves[i]] = player;
+
+      if (player === aiPlayer) {
+        const result = minimax(newBoard, humanPlayer);
+        move.score = result.score;
+      } else {
+        const result = minimax(newBoard, aiPlayer);
+        move.score = result.score;
+      }
+      // reset spot to empty
+      // eslint-disable-next-line no-param-reassign
+      newBoard[possibleMoves[i]] = move.index;
+
+      // push the object to the array
+      moves.push(move);
     }
-  };
-  // eslint-disable-next-line max-len
-  const checkWin = () => winningComp.some((comp) => comp.every((index) => cells[index].classList.contains(currentClass)));
-
-  const checkDraw = () => cells.every((cell) => cell.classList.contains('xs') || cell.classList.contains('os'));
-
-  const updateScore = (result) => {
-    if (result === 'xs') {
-      scores.playerX += 1;
-      xScore.textContent = scores.playerX;
-    } else if (result === 'os') {
-      scores.playerO += 1;
-      oScore.textContent = scores.playerO;
-    } else {
-      scores.draws += 1;
-      drawScore.textContent = scores.draws;
-    }
-  };
-
-  const resetCells = () => {
-    cells.forEach((element) => {
-      element.classList.remove('xs');
-      element.classList.remove('os');
-    });
-  };
-
-  const resetEverything = () => {
-    gameEndWindow.classList.add('show');
-    resetCells();
-    currentClass = 'xs';
-    board.classList.remove('o');
-    board.classList.add('x');
-  };
-
-  const gameEnd = (winner) => {
-    gameEndWindow.classList.remove('show');
-    restartButton.addEventListener('click', () => {
-      resetEverything();
-    });
-    if (winner === 'xs') gameEndWindow.children[0].textContent = `${xName} won!`;
-    else if (winner === 'os') gameEndWindow.children[0].textContent = `${oName} won!`;
-    else gameEndWindow.children[0].textContent = 'It\'s a draw!';
-  };
-
-  const handleClick = () => {
-    cells.forEach((element) => {
-      element.addEventListener('click', (e) => {
-        addMarker(e.target);
-        if (checkWin()) {
-          updateScore(currentClass);
-          gameEnd(currentClass);
-        } else if (checkDraw()) {
-          updateScore('draw');
-          gameEnd();
+    // if it is the computer's turn loop over the moves and choose the move with the highest score
+    let bestMove;
+    if (player === aiPlayer) {
+      let bestScore = -Infinity;
+      for (let i = 0; i < moves.length; i += 1) {
+        if (moves[i].score > bestScore) {
+          bestScore = moves[i].score;
+          bestMove = i;
         }
-        switchTurn();
+      }
+    } else {
+      // else loop over the moves and choose the move with the lowest score
+      let bestScore = Infinity;
+      for (let i = 0; i < moves.length; i += 1) {
+        if (moves[i].score < bestScore) {
+          bestScore = moves[i].score;
+          bestMove = i;
+        }
+      }
+    }
+    // return the chosen move (object) from the moves array
+    return moves[bestMove];
+  };
+
+  const iaMove = (move) => {
+    addClass(cells[move]);
+    updateMoves(cells[move]);
+    if (checkWin(board, currentPlayer)) alert(`${currentPlayer} won`);
+    checkDraw();
+    switchPlayer();
+  };
+
+  const generateClickEvent = () => {
+    cells.forEach((cell) => {
+      cell.addEventListener('click', (e) => {
+        addClass(e.target);
+        updateMoves(e.target);
+        if (checkWin(board, currentPlayer)) alert(`${currentPlayer} won`);
+        checkDraw();
+        switchPlayer();
+        iaMove(minimax(board, aiPlayer).index); // AI makes his move
       });
     });
   };
-
-  handleClick(cells);
+  return { generateClickEvent };
 })();
+GameSettings.generateClickEvent();

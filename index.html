@@ -1,8 +1,8 @@
-<!DOCTYspanE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewspanort" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="normalize.css">
   <link rel="stylesheet" href="styles.css">
   <title>Tic-tac-toe</title>
@@ -10,46 +10,47 @@
 </head>
 <body>
   <h1 class="title">Tic Tac Toe</h1>
-  <h2 class="subtitle" id='subtitle'>Name, I invite you a drink if you can beat me once &#128526</h2>
+  <h2 class="subtitle" id="subtitle"></h2><!--Name, I invite you a drink if you can beat me once &#128526-->
   <ul class="score">
-    <li class='score__item'><span id='name__playerx'>X's</span> score: <span id='score__playerx'>0</span></li>
-    <li class='score__item'>Draws: <span id='score__draws'>0</span></li>
-    <li class='score__item'><span id='name__playero'>O's</span> score: <span id='score__playero'>0</span></li>
+    <li class="score__item"><span id="name__playerx">Player</span>: <span id="score__playerx">0</span></li>
+    <li class="score__item">Draws: <span id="score__draws">0</span></li>
+    <li class="score__item"><span id="name__playero">AI</span>: <span id="score__playero">0</span></li>
   </ul>
-  <div class="board x" id='board'>
-    <div class="board__cell" data-cell></div>
-    <div class="board__cell" data-cell></div>
-    <div class="board__cell" data-cell></div>
-    <div class="board__cell" data-cell></div>
-    <div class="board__cell" data-cell></div>
-    <div class="board__cell" data-cell></div>
-    <div class="board__cell" data-cell></div>
-    <div class="board__cell" data-cell></div>
-    <div class="board__cell" data-cell></div>
+  <div class="board x" id="board">
+    <div class="board__cell" data-index='0'></div>
+    <div class="board__cell" data-index='1'></div>
+    <div class="board__cell" data-index='2'></div>
+    <div class="board__cell" data-index='3'></div>
+    <div class="board__cell" data-index='4'></div>
+    <div class="board__cell" data-index='5'></div>
+    <div class="board__cell" data-index='6'></div>
+    <div class="board__cell" data-index='7'></div>
+    <div class="board__cell" data-index='8'></div>
   </div>
-  <div class='emergingwindow show'>
-    <h2 class='emergingwindow__title'>How do you want to play?</h2>
+  <div class="emergingwindow dontshow">
+    <h2 class="emergingwindow__title">How do you want to play?</h2>
     <form action="#" method="post">
-      <input type="radio" name="mode" id="ia-game" class='show'>
-      <label for="ia-game" class='emergingwindow__mode'>AI</label>
-      <input type="radio" name="mode" id="2p-game" class='show'>
-      <label for="2p-game" class='emergingwindow__mode'>Two players</label>
+      <input type="radio" name="mode" id="ia-game" class="dontshow">
+      <label for="ia-game" class="emergingwindow__mode">AI</label>
+      <input type="radio" name="mode" id="2p-game" class="dontshow">
+      <label for="2p-game" class="emergingwindow__mode">Two players</label>
     </form>
-    <button class='emergingwindow__button'>Start</button>
+    <button class="emergingwindow__button">Start</button>
   </div>
-  <div class='emergingwindow show'>
-    <h2 class='emergingwindow__title'>What's your name</h2>
-    <form action="#" method="post">
-      <label for="x-name" class='emergingwindow_names--label'>X's player:</label>
-      <input type="text" name="mode" id="x-name" class='emergingwindow_names' required>
-      <label for="o-name" class='emergingwindow_names--label'>O's player</label>
-      <input type="text" name="mode" id="o-name" class='emergingwindow_names' required>
+  <div class="emergingwindow dontshow" id="names-window">
+    <h2 class="emergingwindow__title">What's your name</h2>
+    <form action="#" method="post" id="names-form">
+      <label for="name1" class="emergingwindow_names--label">X's player:</label>
+      <input type="text" name="mode" id="name1" class="emergingwindow_names" required>
+      <label for="name2" class="emergingwindow_names--label">O's player</label>
+      <input type="text" name="mode" id="name2" class="emergingwindow_names" required>
     </form>
-    <button class='emergingwindow__button'>Start</button>
+    <button class="emergingwindow__button" id="names-button">Start</button>
+    <p class="error-names dontshow">You need to enter two valid names.</p>
   </div>
-  <div class='emergingwindow show' id='game-end'>
-    <h2 class='emergingwindow__title'></h2>
-    <button class='emergingwindow__button' id='restart-button'>Restart</button>
+  <div class="emergingwindow dontshow" id="game-end">
+    <h2 class="emergingwindow__title"></h2>
+    <button class="emergingwindow__button" id="restart-button">Restart</button>
   </div>
 </body>
 </html>
