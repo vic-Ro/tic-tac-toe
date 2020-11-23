@@ -14,7 +14,7 @@ body {
   --white: #fff;
   --brown: rgb(100, 50, 0);
   --brown-hover: #d0c1b2;
-  --brown-darker: rgba(20, 10, 0, 0.9);
+  --brown-darker: rgba(20, 10, 0, 1);
 }
 
 /** Menu and scores**/
@@ -170,7 +170,7 @@ body {
 
 .emergingwindow__button {
   padding: .5em;
-  margin-top: 1.5em;
+  margin: 0 0.5em;
   font-size: 1.2em;
   cursor: pointer;
   color: var(--white);

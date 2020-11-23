@@ -4,6 +4,11 @@ const GameSettings = (() => {
   const humanPlayer = 'X';
   const aiPlayer = 'O';
   const board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+  const score = {
+    x: 0,
+    o: 0,
+    draws: 0,
+  };
 
   const winningCombinations = [
     [0, 1, 2],
@@ -19,6 +24,21 @@ const GameSettings = (() => {
   let currentPlayer = humanPlayer;
 
   //* DOM ELEMENTS *//
+
+  const startWindow = document.getElementById('start-window');
+  const startAiGame = document.getElementById('start-aigame');
+  const start2pGame = document.getElementById('start-2pgame');
+  const playerXname = document.getElementById('playerxname');
+  const playerOname = document.getElementById('playeroname');
+  const scoreX = document.getElementById('score-x');
+  const scoreO = document.getElementById('score-o');
+  const scoreDraws = document.getElementById('score-draws');
+
+  const gameEndWindow = document.getElementById('game-end');
+  const gameEndTitle = document.getElementById('game-end-title');
+  const restartButton = document.getElementById('restartButton');
+
+  const subtitle = document.getElementById('subtitle');
   const cells = [...document.querySelectorAll('.board__cell')];
 
   //* FUNCTIONS *//
@@ -34,10 +54,57 @@ const GameSettings = (() => {
     // then we push the moves to each player track
   };
 
+  const setScores = () => {
+    scoreX.textContent = score.x;
+    scoreO.textContent = score.o;
+    scoreDraws.textContent = score.draws;
+  };
+
+  const updateScore = (player) => {
+    switch (player) {
+      case 'X':
+        scoreX.textContent = score.x;
+        break;
+      case 'O':
+        scoreO.textContent = score.o;
+        break;
+      case 'draw':
+        scoreDraws.textContent = score.draws;
+        break;
+      default:
+        break;
+    }
+  };
+
+  const resetCells = () => {
+    cells.forEach((element) => {
+      element.classList.remove('xs');
+      element.classList.remove('os');
+    });
+  };
+
+  const resetEverything = () => {
+    gameEndWindow.classList.add('dontshow');
+    resetCells();
+    currentPlayer = humanPlayer;
+    board.classList.remove('o');
+    board.classList.add('x');
+  };
+
+  const gameEnd = (winner) => {
+    gameEndWindow.classList.remove('dontshow');
+    if (winner === 'X') gameEndTitle.textContent = `${currentPlayer}'s won!`;
+    else if (winner === 'O') gameEndTitle.textContent = `${currentPlayer}'s won!`;
+    else gameEndTitle.textContent = 'It\'s a draw!';
+    restartButton.addEventListener('click', () => {
+      resetEverything();
+    });
+  };
+
   const checkWin = (boardArray, player) => winningCombinations.some((combination) => combination.every((cell) => boardArray[cell] === player));
 
   const checkDraw = () => {
-    if (cleanBoard(board).length === 0 && checkWin(board, currentPlayer) === false) return alert('draw');
+    if (cleanBoard(board).length === 0 && checkWin(board, currentPlayer) === false) return gameEnd();
     return false;
   };
 
@@ -102,12 +169,30 @@ const GameSettings = (() => {
   const iaMove = (move) => {
     addClass(cells[move]);
     updateMoves(cells[move]);
-    if (checkWin(board, currentPlayer)) alert(`${currentPlayer} won`);
+    if (checkWin(board, currentPlayer)) gameEnd(currentPlayer);
     checkDraw();
     switchPlayer();
   };
 
-  const generateClickEvent = () => {
+  const gameVsAi = () => {
+    setScores();
+    cells.forEach((cell) => {
+      cell.addEventListener('click', (e) => {
+        addClass(e.target);
+        updateMoves(e.target);
+        if (checkWin(board, currentPlayer)) gameEnd(currentPlayer);
+        checkDraw();
+        switchPlayer();
+        iaMove(minimax(board, aiPlayer).index); // AI makes his move
+      });
+    });
+  };
+
+  const gameWithTwoPlayers = () => {
+    setScores();
+    subtitle.textContent = 'Place three of marks in a horizontal, vertical, or diagonal row to win!';
+    playerXname.textContent = 'X\'s player';
+    playerOname.textContent = 'O\'s player';
     cells.forEach((cell) => {
       cell.addEventListener('click', (e) => {
         addClass(e.target);
@@ -119,6 +204,18 @@ const GameSettings = (() => {
       });
     });
   };
-  return { generateClickEvent };
+
+  const chooseGameMode = () => {
+    start2pGame.addEventListener('click', () => {
+      startWindow.classList.add('dontshow');
+      gameWithTwoPlayers();
+    });
+    startAiGame.addEventListener('click', () => {
+      startWindow.classList.add('dontshow');
+      gameVsAi();
+    });
+  };
+
+  return { chooseGameMode };
 })();
-GameSettings.generateClickEvent();
+GameSettings.chooseGameMode();

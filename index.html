@@ -10,11 +10,11 @@
 </head>
 <body>
   <h1 class="title">Tic Tac Toe</h1>
-  <h2 class="subtitle" id="subtitle"></h2><!--Name, I invite you a drink if you can beat me once &#128526-->
+  <h2 class="subtitle" id="subtitle">I invite you a drink if you can beat me once &#128526</h2><!--Name, I invite you a drink if you can beat me once &#128526-->
   <ul class="score">
-    <li class="score__item"><span id="name__playerx">Player</span>: <span id="score__playerx">0</span></li>
-    <li class="score__item">Draws: <span id="score__draws">0</span></li>
-    <li class="score__item"><span id="name__playero">AI</span>: <span id="score__playero">0</span></li>
+    <li class="score__item"><span id="playerxname">X's player</span>: <span id="score-x"></span></li>
+    <li class="score__item">Draws: <span id="score-draws"></span></li>
+    <li class="score__item"><span id="playeroname">O's player (AI)</span>: <span id="score-o"></span></li>
   </ul>
   <div class="board x" id="board">
     <div class="board__cell" data-index='0'></div>
@@ -27,29 +27,15 @@
     <div class="board__cell" data-index='7'></div>
     <div class="board__cell" data-index='8'></div>
   </div>
-  <div class="emergingwindow dontshow">
+  <div class="emergingwindow" id='start-window'>
     <h2 class="emergingwindow__title">How do you want to play?</h2>
-    <form action="#" method="post">
-      <input type="radio" name="mode" id="ia-game" class="dontshow">
-      <label for="ia-game" class="emergingwindow__mode">AI</label>
-      <input type="radio" name="mode" id="2p-game" class="dontshow">
-      <label for="2p-game" class="emergingwindow__mode">Two players</label>
-    </form>
-    <button class="emergingwindow__button">Start</button>
-  </div>
-  <div class="emergingwindow dontshow" id="names-window">
-    <h2 class="emergingwindow__title">What's your name</h2>
-    <form action="#" method="post" id="names-form">
-      <label for="name1" class="emergingwindow_names--label">X's player:</label>
-      <input type="text" name="mode" id="name1" class="emergingwindow_names" required>
-      <label for="name2" class="emergingwindow_names--label">O's player</label>
-      <input type="text" name="mode" id="name2" class="emergingwindow_names" required>
-    </form>
-    <button class="emergingwindow__button" id="names-button">Start</button>
-    <p class="error-names dontshow">You need to enter two valid names.</p>
+    <div class="game-modes">
+      <button class="emergingwindow__button" id='start-aigame'>Game vs AI</button>
+      <button class="emergingwindow__button" id='start-2pgame'>Two players game</button>
+    </div>
   </div>
   <div class="emergingwindow dontshow" id="game-end">
-    <h2 class="emergingwindow__title"></h2>
+    <h2 class="emergingwindow__title" id="game-end-title"></h2>
     <button class="emergingwindow__button" id="restart-button">Restart</button>
   </div>
 </body>
