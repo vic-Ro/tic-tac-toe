@@ -3,7 +3,7 @@ const GameSettings = (() => {
   //* VARIABLES *//
   const humanPlayer = 'X';
   const aiPlayer = 'O';
-  const board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+  let board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   const score = {
     x: 0,
     o: 0,
@@ -25,34 +25,41 @@ const GameSettings = (() => {
 
   //* DOM ELEMENTS *//
 
+  const boardDiv = document.getElementById('board');
+
   const startWindow = document.getElementById('start-window');
   const startAiGame = document.getElementById('start-aigame');
   const start2pGame = document.getElementById('start-2pgame');
-  const playerXname = document.getElementById('playerxname');
-  const playerOname = document.getElementById('playeroname');
+  const playerXName = document.getElementById('playerxname');
+  const playerOName = document.getElementById('playeroname');
   const scoreX = document.getElementById('score-x');
   const scoreO = document.getElementById('score-o');
   const scoreDraws = document.getElementById('score-draws');
 
+  const namesWindow = document.getElementById('names-window');
+  const namesInputX = document.getElementById('x-input');
+  const namesInputO = document.getElementById('o-input');
+  const namesButton = document.getElementById('names-button');
+  const errorNames = document.querySelector('.error-form');
+
   const gameEndWindow = document.getElementById('game-end');
   const gameEndTitle = document.getElementById('game-end-title');
-  const restartButton = document.getElementById('restartButton');
+  const resetButton = document.getElementById('restart-button');
 
   const subtitle = document.getElementById('subtitle');
   const cells = [...document.querySelectorAll('.board__cell')];
 
   //* FUNCTIONS *//
-  function addClass(target) {
+  const addClass = (target) => {
     if (currentPlayer === humanPlayer) target.classList.add('xs');
     else target.classList.add('os');
-  }
-  const cleanBoard = (boardArray) => boardArray.filter((index) => index !== 'X' && index !== 'O');
+  };
 
   const updateMoves = (target) => {
-    // first we update the board
     board[target.dataset.index] = currentPlayer;
-    // then we push the moves to each player track
   };
+
+  const cleanBoard = (boardArray) => boardArray.filter((index) => index !== 'X' && index !== 'O');
 
   const setScores = () => {
     scoreX.textContent = score.x;
@@ -86,19 +93,27 @@ const GameSettings = (() => {
   const resetEverything = () => {
     gameEndWindow.classList.add('dontshow');
     resetCells();
+    board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     currentPlayer = humanPlayer;
-    board.classList.remove('o');
-    board.classList.add('x');
+    boardDiv.classList.remove('o');
+    boardDiv.classList.add('x');
   };
 
   const gameEnd = (winner) => {
     gameEndWindow.classList.remove('dontshow');
-    if (winner === 'X') gameEndTitle.textContent = `${currentPlayer}'s won!`;
-    else if (winner === 'O') gameEndTitle.textContent = `${currentPlayer}'s won!`;
-    else gameEndTitle.textContent = 'It\'s a draw!';
-    restartButton.addEventListener('click', () => {
-      resetEverything();
-    });
+    if (winner === 'X') {
+      score.x += 1;
+      gameEndTitle.textContent = `${playerXName.textContent} wins!`;
+      updateScore(winner);
+    } else if (winner === 'O') {
+      score.o += 1;
+      gameEndTitle.textContent = `${playerOName.textContent} wins!`;
+      updateScore(winner);
+    } else {
+      score.draws += 1;
+      gameEndTitle.textContent = 'It\'s a draw!';
+      updateScore('draw');
+    }
   };
 
   const checkWin = (boardArray, player) => winningCombinations.some((combination) => combination.every((cell) => boardArray[cell] === player));
@@ -113,9 +128,19 @@ const GameSettings = (() => {
     else currentPlayer = humanPlayer;
   };
 
+  const switchBoardHover = () => {
+    if (currentPlayer === humanPlayer) {
+      boardDiv.classList.remove('o');
+      boardDiv.classList.add('x');
+    } else {
+      boardDiv.classList.remove('x');
+      boardDiv.classList.add('o');
+    }
+  };
+
   const minimax = (newBoard, player) => {
     const possibleMoves = cleanBoard(board);
-    // Check if the game ends with a win, lose or tie
+    // Checks if the game ends with a win, lose or tie
     if (checkWin(newBoard, humanPlayer)) return { score: -10 };
     if (checkWin(newBoard, aiPlayer)) return { score: 10 };
     if (possibleMoves.length === 0) return { score: 0 };
@@ -178,6 +203,7 @@ const GameSettings = (() => {
     setScores();
     cells.forEach((cell) => {
       cell.addEventListener('click', (e) => {
+        if (board[e.target.dataset.index] === 'X' || board[e.target.dataset.index] === 'O') return;
         addClass(e.target);
         updateMoves(e.target);
         if (checkWin(board, currentPlayer)) gameEnd(currentPlayer);
@@ -191,31 +217,44 @@ const GameSettings = (() => {
   const gameWithTwoPlayers = () => {
     setScores();
     subtitle.textContent = 'Place three of marks in a horizontal, vertical, or diagonal row to win!';
-    playerXname.textContent = 'X\'s player';
-    playerOname.textContent = 'O\'s player';
+    playerXName.textContent = namesInputX.value;
+    playerOName.textContent = namesInputO.value;
     cells.forEach((cell) => {
       cell.addEventListener('click', (e) => {
+        if (board[e.target.dataset.index] === 'X' || board[e.target.dataset.index] === 'O') return;
         addClass(e.target);
         updateMoves(e.target);
-        if (checkWin(board, currentPlayer)) alert(`${currentPlayer} won`);
+        if (checkWin(board, currentPlayer)) gameEnd(currentPlayer);
         checkDraw();
         switchPlayer();
-        iaMove(minimax(board, aiPlayer).index); // AI makes his move
+        switchBoardHover();
       });
     });
   };
 
-  const chooseGameMode = () => {
-    start2pGame.addEventListener('click', () => {
-      startWindow.classList.add('dontshow');
-      gameWithTwoPlayers();
-    });
+  const startNewGame = () => {
     startAiGame.addEventListener('click', () => {
       startWindow.classList.add('dontshow');
       gameVsAi();
     });
+    start2pGame.addEventListener('click', () => {
+      startWindow.classList.add('dontshow');
+      namesWindow.classList.remove('dontshow');
+    });
+    namesButton.addEventListener('click', () => {
+      if (namesInputX.value === '' || namesInputO.value === '') {
+        errorNames.classList.remove('dontshow');
+      } else {
+        namesWindow.classList.add('dontshow');
+        gameWithTwoPlayers();
+      }
+    });
+    resetButton.addEventListener('click', () => {
+      gameEndWindow.classList.add('dontshow');
+      resetEverything();
+    });
   };
 
-  return { chooseGameMode };
+  return { startNewGame };
 })();
-GameSettings.chooseGameMode();
+GameSettings.startNewGame();

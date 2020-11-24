@@ -5,7 +5,6 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
 }
 
 :root {
@@ -15,6 +14,12 @@ body {
   --brown: rgb(100, 50, 0);
   --brown-hover: #d0c1b2;
   --brown-darker: rgba(20, 10, 0, 1);
+  --green: #9fc;
+  --red:#f99;
+  --linkedin: #0e76a8;
+	--github: #24292e;
+  --grey: #414f5b;
+	--hoverLink: #f55;
 }
 
 /** Menu and scores**/
@@ -48,7 +53,7 @@ body {
 .board {
   display: grid;
   grid-template-columns: repeat(3, auto);
-  background-color: white; /*TODO provisional */
+  background-color: var(--white);
   width: 100%;
   height: 80%;
   justify-content: center;
@@ -165,6 +170,8 @@ body {
 
 .emergingwindow__title {
   font-size: 3em;
+  text-align: center;
+  margin: 20px;
   color: var(--white);
 }
 
@@ -191,7 +198,7 @@ body {
 }
 
 .emergingwindow__mode {
-  background-color: white;
+  background-color: var(--white);
   display: inline-block;
   text-align: center;
   width: 110px;
@@ -208,28 +215,90 @@ body {
 }
 
 .emergingwindow__mode--selected {
-  background-color: #9fc;
+  background-color: var(--green);
 }
 
-.emergingwindow_names {
+.emergingwindow__input {
   width: 90px;
   height: 30px;
   padding: 5px;
   border-radius: 5px;
-  background-color: white;
+  background-color: var(--white);
   border: 2px solid var(--brown-hover);
 }
 
-.emergingwindow_names--label {
+.emergingwindow__label {
   color: var(--white);
   margin-left: 10px;
   margin-right: 5px;
 }
 
-.emergingwindow_names:focus {
-  border-color:#9fc;
+.emergingwindow__input:focus {
+  border-color:var(--green);
 }
 
-.error-names {
-  color: #ff9999;
+.error-form {
+  color: var(--red);
+  text-align: center;
+}
+
+/*********FOOTER***********/
+.footer {
+	background-color:var(--white);
+    border-top: 5px solid var(--brown);
+    bottom: 0;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+    grid-template-rows: max-content;
+    justify-content: center;
+    position: fixed;
+    width: 100%;
+}
+@media (max-width:650px) {
+	.footer {
+        grid-template-columns: 1fr;
+    }
+    .controls {
+        margin: 5px auto 220px;
+    }
+}
+.footer__item {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	padding: 1rem;
+	width: 100%;
+}
+.footer__item:nth-child(3) {
+	justify-self: center;
+	max-width: 300px;
+}
+.footer__logo {
+	height: 40px;
+	padding-right: 0.3rem;
+}
+
+.fa-linkedin {
+    color: var(--linkedin);
+    font-size: 2.5em;
+	padding: 5px;
+}
+.fa-github-square {
+    color: var(--github);
+    font-size: 2.5em;
+	padding: 5px;
+}
+.fa-envelope-square {
+    color: var(--grey);
+    font-size: 2.5em;
+	padding: 5px;
+}
+.fa-linkedin:hover, .fa-github-square:hover, .fa-envelope-square:hover {
+	color: var(--hoverLink);
+	transition: 0.2s;
+}
+.madeby {
+	max-width: 150px;
+	padding: 10px;
 }

@@ -7,14 +7,15 @@
   <link rel="stylesheet" href="styles.css">
   <title>Tic-tac-toe</title>
   <script src="script.js" defer></script>
+  <script src="https://kit.fontawesome.com/b906595944.js" crossorigin="anonymous" defer></script>  
 </head>
 <body>
   <h1 class="title">Tic Tac Toe</h1>
   <h2 class="subtitle" id="subtitle">I invite you a drink if you can beat me once &#128526</h2><!--Name, I invite you a drink if you can beat me once &#128526-->
   <ul class="score">
-    <li class="score__item"><span id="playerxname">X's player</span>: <span id="score-x"></span></li>
+    <li class="score__item"><span id="playerxname">You</span>: <span id="score-x"></span></li>
     <li class="score__item">Draws: <span id="score-draws"></span></li>
-    <li class="score__item"><span id="playeroname">O's player (AI)</span>: <span id="score-o"></span></li>
+    <li class="score__item"><span id="playeroname">AI</span>: <span id="score-o"></span></li>
   </ul>
   <div class="board x" id="board">
     <div class="board__cell" data-index='0'></div>
@@ -34,9 +35,30 @@
       <button class="emergingwindow__button" id='start-2pgame'>Two players game</button>
     </div>
   </div>
+  <div class="emergingwindow dontshow" id='names-window'>
+    <h2 class="emergingwindow__title">Choose names</h2>
+    <form action="#" class="">
+      <label for="x-input" class="emergingwindow__label">X's</label>
+      <input type="text" class="emergingwindow__input" id='x-input'required>
+      <label for="o-input" class="emergingwindow__label">O's</label>
+      <input type="text" class="emergingwindow__input" id='o-input' required>
+      <button class="emergingwindow__button" id='names-button'>Start</button>
+      <p class="error-form dontshow">You have to enter two valid names.</p>
+    </form>
+  </div>
   <div class="emergingwindow dontshow" id="game-end">
     <h2 class="emergingwindow__title" id="game-end-title"></h2>
     <button class="emergingwindow__button" id="restart-button">Restart</button>
   </div>
+  <footer class='footer'>
+    <div class='footer__item'>
+        <a href="https://github.com/vic-Ro" target="_blank"><i class="fab fa-github-square"></i></a>
+        <a href="https://www.linkedin.com/in/victor-romero-10/" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href='mailto:vromerocomino@gmail.com' target="_blank"><i class="fas fa-envelope-square"></i></a>
+    </div>
+    <div class='footer__item'>
+        <img src='madeby.png' alt='Made by Víctor Romero Comino' class='madeby'>
+    </div>
+</footer>
 </body>
 </html>
