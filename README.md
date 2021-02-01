@@ -2,9 +2,9 @@
 
 This is a project for the Odin Project [https://www.theodinproject.com/lessons/tic-tac-toe-javascript]
 
-Live demo: https://vic-ro.github.io/tic-tac-toe/
+Live demo: https://vicromerodev.github.io/tic-tac-toe/
 
-Github repository: https://github.com/vic-Ro/tic-tac-toe/
+Github repository: https://github.com/vicromerodev/tic-tac-toe/
 
 The idea of the project was to build a Tic tac Toe game trying to have as little global code as possible.
 
